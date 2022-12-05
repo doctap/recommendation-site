@@ -1,18 +1,16 @@
 FROM node
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY package.json /app
+COPY package*.json ./
 
 RUN npm install
 
 COPY . .
 
-ENV PORT 5000
+ENV PORT 8080
 
 EXPOSE $PORT
-
-VOLUME [ "/app/data" ]
 
 RUN npm run build
 
