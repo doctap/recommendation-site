@@ -1,0 +1,5 @@
+{
+	"match": ["src"],
+	"ext": ".ts,.js",
+	"exec": "npx ts-node ./src/server.ts"
+}
