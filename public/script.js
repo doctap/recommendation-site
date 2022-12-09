@@ -1,4 +1,4 @@
-fetch("/employees")
+fetch("/users")
   .then((response) => response.json())
   .then((data) => {
     data.forEach((employee) => {
