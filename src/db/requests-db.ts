@@ -7,7 +7,7 @@ const client = new Client({
 	host: "localhost",// "postgres"
 });
 
-export async function sqlRequestGET(sql: string) {
+export async function sqlRequest(sql: string) {
 	const r: IResponseDB = { body: null, error: false };
 	await client
 		.query(sql)
