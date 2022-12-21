@@ -26,3 +26,5 @@ export const checkJwt = expressjwt({
 	// алгоритм, использованный для подписания токена
 	algorithms: ['RS256']
 })
+
+//cc0f5da250d9af55fa19a955d94915ca face

@@ -10,7 +10,7 @@ INSERT INTO Users(firstName, lastName) VALUES
  ('Meadow', 'Crystalfreak'),
  ('Buddy-Ray', 'Perceptor'),
  ('Prince', 'Flitterbell'),
- ('Frank ', 'Holland'),
+ ('Frank', 'Holland'),
  ('Ursula', 'McKinney'),
  ('Amy', 'Townsend'),
  ('Grace', 'Jacobs'),

@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "dist/server.js",
 	"author": "Vasiliy Nikiforov",
+	"type": "commonjs",
 	"license": "ISC",
 	"scripts": {
 		"dev": "npx nodemon",
