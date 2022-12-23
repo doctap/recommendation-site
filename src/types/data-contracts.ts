@@ -9,6 +9,7 @@ export interface IReview {
 	author_rating: number;
 	likes: number;
 	user_id: number;
+	average_rating: string;
 }
 
 export interface IRequestSlice {
@@ -16,12 +17,27 @@ export interface IRequestSlice {
 	take: number;
 }
 
-export interface IRegisterUser {
-	token?: string;
-	firstName?: string;
-	lastName?: string;
+export interface IUserData {
+	name?: string;
+	given_name?: string;
+	family_name?: string;
+	middle_name?: string;
+	nickname?: string;
+	preferred_username?: string;
+	profile?: string;
+	picture?: string;
+	website?: string;
+	email?: string;
+	email_verified?: boolean;
+	gender?: string;
+	birthdate?: string;
+	zoneinfo?: string;
+	locale?: string;
+	phone_number?: string;
+	phone_number_verified?: boolean;
+	address?: string;
+	updated_at?: string;
 	sub?: string;
-	id?: number;
 }
 
 export type ReviewId = { reviewId: number }
@@ -29,8 +45,8 @@ export type ReviewId = { reviewId: number }
 export interface IBody<T> extends Express.Request { body: T }
 
 export interface ILike {
-	reviewsId: number;
-	userId?: number;
+	reviews_id: number;
+	user_id: number;
 	isLike: boolean; 
 }
 
