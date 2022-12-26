@@ -18,6 +18,13 @@ export interface IRequestSlice {
 }
 
 export interface IUserData {
+	admin?: boolean;
+	token: string;
+	data_user?: IUser;
+	isAuthenticated?: boolean;
+}
+
+export interface IUser {
 	name?: string;
 	given_name?: string;
 	family_name?: string;
@@ -40,14 +47,14 @@ export interface IUserData {
 	sub?: string;
 }
 
-export type ReviewId = { reviewId: number }
+export type ReviewId = { review_id: number }
 
 export interface IBody<T> extends Express.Request { body: T }
 
 export interface ILike {
-	reviews_id: number;
-	user_id: number;
-	isLike: boolean; 
+	review_id: number;
+	sub?: string;
+	user_likes_it: boolean; 
 }
 
 export interface IRequestByTwoId {
@@ -63,4 +70,10 @@ export interface IResponseDB<T> {
 export interface IResponseRegister {
 	isRegistered: boolean;
 	isExist: boolean;
+}
+
+export interface IRate {
+	review_id: number;
+	sub?: string;
+	user_rating: number;
 }
