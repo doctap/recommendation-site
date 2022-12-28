@@ -2,16 +2,27 @@ import express, { Application, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cors, { CorsOptions } from 'cors';
-import { IRequestSlice, IBody, ReviewId, ILike, IUser, IResponseDB, IResponseRegister, IReview, IUserData, IRate } from './types/data-contracts';
+import {
+	IRequestSlice,
+	IBody,
+	ILike,
+	IUser,
+	IReview,
+	IUserData,
+	IRate,
+	ICreateReview
+} from './types/data-contracts';
 import { sqlRequest } from './db/requests-db';
 import helmet from 'helmet';
-import { checkJwt } from './utils/checkJwt';
+import { checkJwt } from './middleware/checkJwt';
+import { convertBase64 } from './utils/manageFS';
+import upload from './middleware/upload'
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT ?? 5000; // 8080
-const urlencodedParser = express.urlencoded({ extended: false });
+app.use(express.urlencoded({ extended: true }));
 
 const corsOptions: CorsOptions = {
 	credentials: true,
@@ -28,7 +39,7 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 
 
-app.post("/reviews", urlencodedParser, async (req: IBody<IRequestSlice>, res: Response<IReview[]>) => {
+app.post("/reviews", async (req: IBody<IRequestSlice>, res: Response<IReview[]>) => {
 	const body = req.body;
 
 	console.log('reviews')// <==
@@ -43,7 +54,10 @@ app.post("/reviews", urlencodedParser, async (req: IBody<IRequestSlice>, res: Re
 	if (r.error) {
 		res.sendStatus(501)
 	} else {
-		r.body.forEach(it => it.average_rating = parseFloat(it.average_rating).toFixed(1))
+		r.body.forEach(it => {
+			it.average_rating = parseFloat(it.average_rating).toFixed(1);
+			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`);
+		})
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
 	}
 })
@@ -65,8 +79,47 @@ app.post("/protectedReviews", checkJwt, async (req: IBody<IRequestSlice & IUser 
 	if (r.error) {
 		res.sendStatus(501)
 	} else {
-		r.body.forEach(it => it.average_rating = parseFloat(it.average_rating).toFixed(1))
+		r.body.forEach(it => {
+			it.average_rating = parseFloat(it.average_rating).toFixed(1);
+			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`)
+		})
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
+	}
+})
+
+// app.post("/userReviews", checkJwt, async (req: IBody<IRequestSlice & IUser & IUserData>, res: Response<IReview[]>) => {
+// 	const body = req.body;
+// 	const r = await sqlRequest<IReview>(
+// 		`SELECT *,
+// 		(SELECT AVG(user_rating) AS average_rating FROM user_ratings WHERE review_id=reviews.id),
+// 		coalesce((SELECT review_like FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_likes_it,
+// 		coalesce((SELECT user_rating FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_rating
+// 		FROM Reviews
+// 		ORDER BY Id
+// 		LIMIT ${body.take} OFFSET ${body.skip};`
+// 	);
+// 	if (r.error) {
+// 		res.sendStatus(501)
+// 	} else {
+// 		r.body.forEach(it => {
+// 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
+// 			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/src/images/books/${it.image}`)
+// 		})
+// 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
+// 	}
+// });
+
+app.post("/createReview", upload.single('file'), async (req, res) => {
+	const body: ICreateReview = JSON.parse(req.body.reviewData);
+	const file = req.file;
+	const r = await sqlRequest(
+		`INSERT INTO reviews(text, title, name_work, type, tags, image, author_rating, likes, user_id)
+		VALUES ('${body.text}', '${body.title}', '${body.name_work}', '${body.type}', '${body.tags}', '${file?.originalname}', ${body.author_rating}, 0, '${body.sub}');`
+	);
+	if (r.error) {
+		res.sendStatus(501)
+	} else {
+		res.sendStatus(204)
 	}
 })
 

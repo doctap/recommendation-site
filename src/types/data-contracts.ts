@@ -3,14 +3,26 @@ export interface IReview {
 	title: string;
 	text: string;
 	name_work: string;
-	type: string;
+	type: typeReview;
 	tags: string;
-	image: string; //File
+	image: string;
 	author_rating: number;
 	likes: number;
 	user_id: number;
 	average_rating: string;
 }
+
+export interface ICreateReview {
+	sub: string;
+	author_rating: number;
+	name_work: string;
+	tags: string;
+	text: string;
+	title: string;
+	type: string;
+}
+
+type typeReview = 'book' | 'film' | 'game';
 
 export interface IRequestSlice {
 	skip: number;
@@ -54,7 +66,7 @@ export interface IBody<T> extends Express.Request { body: T }
 export interface ILike {
 	review_id: number;
 	sub?: string;
-	user_likes_it: boolean; 
+	user_likes_it: boolean;
 }
 
 export interface IRequestByTwoId {
