@@ -20,6 +20,7 @@ export interface ICreateReview {
 	text: string;
 	title: string;
 	type: string;
+	date: string;
 }
 
 type typeReview = 'book' | 'film' | 'game';

@@ -47,8 +47,8 @@ app.post("/reviews", async (req: IBody<IRequestSlice>, res: Response<IReview[]>)
 
 	const r = await sqlRequest<IReview>(
 		`SELECT *,
-		(SELECT AVG(user_rating) AS average_rating FROM user_ratings WHERE review_id=reviews.id)
-		FROM Reviews ORDER BY Id
+		coalesce((SELECT AVG(user_rating) FROM user_ratings WHERE review_id=reviews.id), '0') AS average_rating
+		FROM Reviews ORDER BY date DESC, Id
 		LIMIT ${body.take} OFFSET ${body.skip};`
 	);
 	if (r.error) {
@@ -70,10 +70,10 @@ app.post("/protectedReviews", checkJwt, async (req: IBody<IRequestSlice & IUser 
 
 	const r = await sqlRequest<IReview>(
 		`SELECT *,
-		(SELECT AVG(user_rating) AS average_rating FROM user_ratings WHERE review_id=reviews.id),
+		coalesce((SELECT AVG(user_rating) FROM user_ratings WHERE review_id=reviews.id), '0') AS average_rating,
 		coalesce((SELECT review_like FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_likes_it,
 		coalesce((SELECT user_rating FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_rating
-		FROM Reviews ORDER BY Id
+		FROM Reviews ORDER BY date DESC, Id
 		LIMIT ${body.take} OFFSET ${body.skip};`
 	);
 	if (r.error) {
@@ -87,34 +87,37 @@ app.post("/protectedReviews", checkJwt, async (req: IBody<IRequestSlice & IUser 
 	}
 })
 
-// app.post("/userReviews", checkJwt, async (req: IBody<IRequestSlice & IUser & IUserData>, res: Response<IReview[]>) => {
-// 	const body = req.body;
-// 	const r = await sqlRequest<IReview>(
-// 		`SELECT *,
-// 		(SELECT AVG(user_rating) AS average_rating FROM user_ratings WHERE review_id=reviews.id),
-// 		coalesce((SELECT review_like FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_likes_it,
-// 		coalesce((SELECT user_rating FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_rating
-// 		FROM Reviews
-// 		ORDER BY Id
-// 		LIMIT ${body.take} OFFSET ${body.skip};`
-// 	);
-// 	if (r.error) {
-// 		res.sendStatus(501)
-// 	} else {
-// 		r.body.forEach(it => {
-// 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
-// 			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/src/images/books/${it.image}`)
-// 		})
-// 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
-// 	}
-// });
+app.post("/profilePage", async (req: IBody<IRequestSlice & IUser>, res: Response<IReview[]>) => {
+	const body = req.body;
+
+	console.log('profilePage')// <==
+	//==========================
+
+	const r = await sqlRequest<IReview>(
+		`SELECT *,
+		coalesce((SELECT AVG(user_rating) FROM user_ratings WHERE review_id=reviews.id), '0') AS average_rating,
+		coalesce((SELECT review_like FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_likes_it,
+		coalesce((SELECT user_rating FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_rating
+		FROM Reviews WHERE user_id = '${body?.sub}' ORDER BY date DESC, Id
+		LIMIT ${body.take} OFFSET ${body.skip};`
+	);
+	if (r.error) {
+		res.sendStatus(501)
+	} else { 
+		r.body.forEach(it => {
+			it.average_rating = parseFloat(it.average_rating).toFixed(1);
+			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`)
+		})
+		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
+	}
+})
 
 app.post("/createReview", upload.single('file'), async (req, res) => {
 	const body: ICreateReview = JSON.parse(req.body.reviewData);
 	const file = req.file;
 	const r = await sqlRequest(
-		`INSERT INTO reviews(text, title, name_work, type, tags, image, author_rating, likes, user_id)
-		VALUES ('${body.text}', '${body.title}', '${body.name_work}', '${body.type}', '${body.tags}', '${file?.originalname}', ${body.author_rating}, 0, '${body.sub}');`
+		`INSERT INTO reviews(text, title, name_work, type, tags, image, author_rating, likes, user_id, date)
+		VALUES ('${body.text}', '${body.title}', '${body.name_work}', '${body.type}', '${body.tags}', '${file?.filename}', ${body.author_rating}, 0, '${body.sub}', '${body.date}');`
 	);
 	if (r.error) {
 		res.sendStatus(501)
