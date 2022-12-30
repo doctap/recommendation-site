@@ -10,7 +10,10 @@ import {
 	IReview,
 	IUserData,
 	IRate,
-	ICreateReview
+	ICreateReview,
+	ReviewId,
+	ITokenSub,
+	IReviewId
 } from './types/data-contracts';
 import { sqlRequest } from './db/requests-db';
 import helmet from 'helmet';
@@ -39,7 +42,7 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 
 
-app.post("/reviews", async (req: IBody<IRequestSlice>, res: Response<IReview[]>) => {
+app.post("/", async (req: IBody<IRequestSlice>, res: Response<IReview[]>) => {
 	const body = req.body;
 
 	console.log('reviews')// <==
@@ -57,6 +60,53 @@ app.post("/reviews", async (req: IBody<IRequestSlice>, res: Response<IReview[]>)
 		r.body.forEach(it => {
 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
 			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`);
+		})
+		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
+	}
+})
+
+app.get("/review/:id", async (req, res: Response<IReview[]>) => {
+
+	console.log('1 review')// <==
+	//==========================
+
+	const reviewId = req.params.id;
+
+	const r = await sqlRequest<IReview>(
+		`SELECT *,
+		coalesce((SELECT AVG(user_rating) FROM user_ratings WHERE review_id=reviews.id), '0') AS average_rating
+		FROM Reviews WHERE id=${reviewId};`
+	);
+	if (r.error) {
+		res.sendStatus(501)
+	} else {
+		r.body.forEach(it => {
+			it.average_rating = parseFloat(it.average_rating).toFixed(1);
+			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`);
+		})
+		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
+	}
+})
+
+app.post("/protected_Review", checkJwt, async (req: IBody<IReviewId & ITokenSub>, res: Response<IReview[]>) => {
+	const body = req.body;
+
+	console.log('1 protected_Review')// <==
+	//==========================
+
+	const r = await sqlRequest<IReview>(
+		`SELECT *,
+		coalesce((SELECT AVG(user_rating) FROM user_ratings WHERE review_id=reviews.id), '0') AS average_rating,
+		coalesce((SELECT review_like FROM user_ratings WHERE user_id = '${body.sub}' AND review_id = Reviews.id), '0') AS user_likes_it,
+		coalesce((SELECT user_rating FROM user_ratings WHERE user_id = '${body.sub}' AND review_id = Reviews.id), '0') AS user_rating
+		FROM Reviews WHERE id=${body.review_id} ;`
+	);
+	if (r.error) {
+		res.sendStatus(501)
+	} else {
+		r.body.forEach(it => {
+			it.average_rating = parseFloat(it.average_rating).toFixed(1);
+			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`)
 		})
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
 	}
@@ -87,7 +137,7 @@ app.post("/protectedReviews", checkJwt, async (req: IBody<IRequestSlice & IUser 
 	}
 })
 
-app.post("/profilePage", async (req: IBody<IRequestSlice & IUser>, res: Response<IReview[]>) => {
+app.post("/profilePage", checkJwt, async (req: IBody<IRequestSlice & ITokenSub>, res: Response<IReview[]>) => {
 	const body = req.body;
 
 	console.log('profilePage')// <==
@@ -96,9 +146,9 @@ app.post("/profilePage", async (req: IBody<IRequestSlice & IUser>, res: Response
 	const r = await sqlRequest<IReview>(
 		`SELECT *,
 		coalesce((SELECT AVG(user_rating) FROM user_ratings WHERE review_id=reviews.id), '0') AS average_rating,
-		coalesce((SELECT review_like FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_likes_it,
-		coalesce((SELECT user_rating FROM user_ratings WHERE user_id = '${body?.sub}' AND review_id = Reviews.id), '0') AS user_rating
-		FROM Reviews WHERE user_id = '${body?.sub}' ORDER BY date DESC, Id
+		coalesce((SELECT review_like FROM user_ratings WHERE user_id = '${body.sub}' AND review_id = Reviews.id), '0') AS user_likes_it,
+		coalesce((SELECT user_rating FROM user_ratings WHERE user_id = '${body.sub}' AND review_id = Reviews.id), '0') AS user_rating
+		FROM Reviews WHERE user_id = '${body.sub}' ORDER BY date DESC, Id
 		LIMIT ${body.take} OFFSET ${body.skip};`
 	);
 	if (r.error) {
@@ -145,7 +195,7 @@ app.post("/registerUser", checkJwt, async (req: IBody<IUser>, res: Response) => 
 		} else if (r.body[0].count !== '0') {
 			res.sendStatus(204)
 		}
-	});
+	})
 })
 
 app.post('/likeReview', checkJwt, async (req: IBody<ILike>, res) => {
@@ -173,7 +223,6 @@ app.post('/likeReview', checkJwt, async (req: IBody<ILike>, res) => {
 
 app.post('/giveRating', checkJwt, async (req: IBody<IRate>, res) => {
 	const body = req.body;
-	console.log(body)
 	await sqlRequest(
 		`SELECT count(user_id) as count FROM user_ratings WHERE user_id='${body?.sub}' AND review_id= ${body.review_id};`
 	).then(async (c) => {

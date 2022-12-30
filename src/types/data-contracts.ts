@@ -25,6 +25,15 @@ export interface ICreateReview {
 
 type typeReview = 'book' | 'film' | 'game';
 
+export interface IReviewId {
+	review_id: number;
+}
+
+export interface ITokenSub {
+	token: string;
+	sub: string;
+}
+
 export interface IRequestSlice {
 	skip: number;
 	take: number;
@@ -33,7 +42,7 @@ export interface IRequestSlice {
 export interface IUserData {
 	admin?: boolean;
 	token: string;
-	data_user?: IUser;
+	data_user: IUser;
 	isAuthenticated?: boolean;
 }
 
