@@ -13,7 +13,8 @@ import {
 	ICreateReview,
 	ReviewId,
 	ITokenSub,
-	IReviewId
+	IReviewId,
+	IComment
 } from './types/data-contracts';
 import { sqlRequest } from './db/requests-db';
 import helmet from 'helmet';
@@ -61,6 +62,26 @@ app.post("/", async (req: IBody<IRequestSlice>, res: Response<IReview[]>) => {
 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
 			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`);
 		})
+		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
+	}
+})
+
+app.get("/comments:review_id", async (req, res: Response<IComment[]>) => {
+
+	console.log('comments')// <==
+	//==========================
+
+	const reviewId = req.params.review_id;
+
+	const r = await sqlRequest<IComment>(
+		`SELECT *,
+			(SELECT first_name FROM Users WHERE id=Comments.user_id),
+			(SELECT last_name FROM Users WHERE id=Comments.user_id)
+		FROM Comments WHERE review_id = ${parseInt(reviewId)};`
+	);
+	if (r.error) {
+		res.sendStatus(501)
+	} else {
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
 	}
 })
@@ -153,7 +174,7 @@ app.post("/profilePage", checkJwt, async (req: IBody<IRequestSlice & ITokenSub>,
 	);
 	if (r.error) {
 		res.sendStatus(501)
-	} else { 
+	} else {
 		r.body.forEach(it => {
 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
 			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`)

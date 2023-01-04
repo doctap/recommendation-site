@@ -12,6 +12,14 @@ export interface IReview {
 	average_rating: string;
 }
 
+export interface IComment {
+	user_id: string;
+	last_name: string;
+	first_name: string;
+	text: string;
+	date: Date;
+}
+
 export interface ICreateReview {
 	sub: string;
 	author_rating: number;
