@@ -2,9 +2,9 @@ import { Client } from 'pg';
 import { IResponseDB } from '../types/data-contracts';
 
 const client = new Client({
-	password: "toor",
-	user: "toor",
-	host: "localhost",// "postgres"
+	password: "root",
+	user: "root",
+	host: "postgres",
 });
 
 export async function sqlRequest<T = any>(sql: string) {

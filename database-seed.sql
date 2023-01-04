@@ -30,6 +30,7 @@ CREATE TABLE Reviews (
 	author_rating SMALLINT NOT NULL,
 	likes INTEGER NOT NULL DEFAULT 0,
 	user_id varchar(100),
+	date timestamptz NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE
 );
 
@@ -43,7 +44,8 @@ INSERT INTO
 		image,
 		author_rating,
 		likes,
-		user_id
+		user_id,
+		date
 	)
 VALUES
 	(
@@ -52,10 +54,11 @@ VALUES
 		'Van Helsing',
 		'book',
 		'#book #horror',
-		'imageName',
+		'book-vanHelsing.jpg',
 		7,
 		0,
-		'1'
+		'1',
+		'2022-12-25 03:24:00+00'
 	),
 	(
 		'JavaScript',
@@ -63,10 +66,11 @@ VALUES
 		'JavaScript. Полное руководство',
 		'book',
 		'#book #programming #javascript #webdevelop',
-		'imageName',
+		'book-javascript.jpg',
 		8,
 		0,
-		'2'
+		'2',
+		'2022-12-22 03:24:00+00'
 	),
 	(
 		'TypeScript',
@@ -74,10 +78,11 @@ VALUES
 		'TypeScript. Подробное Руководство',
 		'book',
 		'#book #programming #typescript #webdevelop',
-		'imageName',
+		'book-typescript.jpg',
 		9,
 		0,
-		'3'
+		'3',
+		'2022-12-14 03:24:00+00'
 	),
 	(
 		'Lorem ipsum',
@@ -85,10 +90,11 @@ VALUES
 		'Звездный лорд',
 		'book',
 		'#book #fantasy',
-		'imageName',
+		'book-звезныйЛорд.jpg',
 		3,
 		0,
-		'4'
+		'4',
+		'2022-12-11 03:24:00+00'
 	),
 	(
 		'Lorem ipsum',
@@ -96,10 +102,11 @@ VALUES
 		'Значит, я умерла',
 		'book',
 		'#book #thriller',
-		'imageName',
+		'book-значитЯУмерла.jpg',
 		6,
 		0,
-		'5'
+		'5',
+		'2022-12-11 03:24:00+00'
 	),
 	(
 		'Lorem ipsum',
@@ -107,16 +114,17 @@ VALUES
 		'Инверсия жизни',
 		'book',
 		'#book #horror',
-		'imageName',
+		'book-инверсияЖизни.jpg',
 		9,
 		0,
-		'6'
+		'6',
+		'2022-12-01 03:24:00+00'
 	);
 
 CREATE TABLE Comments (
-	user_id varchar(100),
-	review_id INTEGER,
-	text TEXT,
+	user_id varchar(100) NOT NULL,
+	review_id INTEGER NOT NULL,
+	text TEXT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE,
 	FOREIGN KEY (review_id) REFERENCES Reviews (id) ON DELETE CASCADE
 );
@@ -182,8 +190,8 @@ VALUES
 CREATE TABLE User_Ratings (
 	user_id varchar(100),
 	review_id INTEGER,
-	user_rating SMALLINT NOT NULL,
-	review_like boolean DEFAULT false NOT NULL,
+	user_rating SMALLINT,
+	review_like boolean DEFAULT false,
 	FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE,
 	FOREIGN KEY (review_id) REFERENCES Reviews (id) ON DELETE CASCADE
 );
@@ -208,7 +216,7 @@ VALUES
 	('2', 1, 2, false);
 
 CREATE TABLE User_Roles (
-	user_id varchar(100),
+	user_id varchar(100) NOT NULL,
 	role VARCHAR(50) NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE
 );

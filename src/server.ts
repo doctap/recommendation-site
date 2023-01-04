@@ -25,7 +25,7 @@ import upload from './middleware/upload'
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT ?? 5000; // 8080
+const port = process.env.PORT ?? 8080;
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions: CorsOptions = {
@@ -266,7 +266,7 @@ app.post('/giveRating', checkJwt, async (req: IBody<IRate>, res) => {
 })
 
 app.use('*', (req, res) => {
-	res.status(400).json({ message: 'Only api endpoint available' })
+	res.status(501).json({ message: 'Only api endpoint available' })
 })
 
 app.listen(port, () => {
