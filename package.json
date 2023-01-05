@@ -6,7 +6,11 @@
 	"author": "Vasiliy Nikiforov",
 	"type": "commonjs",
 	"license": "ISC",
+	"engines": {
+		"node": "14.x"
+	},
 	"scripts": {
+		"start": "node dist/server.js",
 		"dev": "npx nodemon",
 		"build": "rimraf dist && tsc",
 		"ts.check": "tsc --project tsconfig.json",
