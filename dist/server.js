@@ -56,7 +56,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 var corsOptions = {
     credentials: true,
     optionsSuccessStatus: 200,
-    origin: "http://localhost:8080",
+    origin: 'https://some-reviews.onrender.com',
     methods: ['GET', 'POST', 'DELETE'],
 };
 app.use((0, helmet_1.default)());
