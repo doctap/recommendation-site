@@ -2,9 +2,9 @@ import { Client } from 'pg';
 import { IResponseDB } from '../types/data-contracts';
 
 const client = new Client({
-	password: "root",
+	password: "fhQJLApGCFbsHb0AXhJ8OasEKVI2aJgn",
 	user: "root",
-	host: "postgres",
+	host: "dpg-cesjbug2i3mh51uqttf0-a",
 });
 
 export async function sqlRequest<T = any>(sql: string) {
@@ -13,8 +13,8 @@ export async function sqlRequest<T = any>(sql: string) {
 		.query(sql)
 		.then(p => r.body = p.rows)
 		.catch(e => {
-			console.error(e);
 			r.error = true;
+			throw new Error(e);
 		});
 	return r;
 }

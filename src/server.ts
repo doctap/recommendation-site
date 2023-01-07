@@ -25,13 +25,13 @@ import upload from './middleware/upload'
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT ?? 5000; //8080
+const port = process.env.PORT ?? 8080; // 8080
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions: CorsOptions = {
 	credentials: true,
 	optionsSuccessStatus: 200,
-	origin: ['http://localhost:3000'],
+	origin: "http://localhost:8080",
 	methods: ['GET', 'POST', 'DELETE'],
 }
 
@@ -60,7 +60,7 @@ app.post("/", async (req: IBody<IRequestSlice>, res: Response<IReview[]>) => {
 	} else {
 		r.body.forEach(it => {
 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
-			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`);
+			it.image = convertBase64(`uploads/${it.image}`);
 		})
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
 	}
@@ -103,7 +103,7 @@ app.get("/review/:id", async (req, res: Response<IReview[]>) => {
 	} else {
 		r.body.forEach(it => {
 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
-			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`);
+			it.image = convertBase64(`uploads/${it.image}`);
 		})
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
 	}
@@ -127,7 +127,7 @@ app.post("/protected_Review", checkJwt, async (req: IBody<IReviewId & ITokenSub>
 	} else {
 		r.body.forEach(it => {
 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
-			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`)
+			it.image = convertBase64(`uploads/${it.image}`)
 		})
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
 	}
@@ -152,7 +152,7 @@ app.post("/protectedReviews", checkJwt, async (req: IBody<IRequestSlice & IUser 
 	} else {
 		r.body.forEach(it => {
 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
-			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`)
+			it.image = convertBase64(`uploads/${it.image}`)
 		})
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
 	}
@@ -177,7 +177,7 @@ app.post("/profilePage", checkJwt, async (req: IBody<IRequestSlice & ITokenSub>,
 	} else {
 		r.body.forEach(it => {
 			it.average_rating = parseFloat(it.average_rating).toFixed(1);
-			it.image = convertBase64(`C:/Im-learning-by-myself/recommendation-site/uploads/${it.image}`)
+			it.image = convertBase64(`uploads/${it.image}`)
 		})
 		res.setHeader("Content-Type", "application/json").status(200).json(r.body);
 	}

@@ -39,9 +39,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sqlRequest = void 0;
 var pg_1 = require("pg");
 var client = new pg_1.Client({
-    password: "root",
+    password: "fhQJLApGCFbsHb0AXhJ8OasEKVI2aJgn",
     user: "root",
-    host: "postgres",
+    host: "dpg-cesjbug2i3mh51uqttf0-a",
 });
 function sqlRequest(sql) {
     return __awaiter(this, void 0, void 0, function () {
@@ -54,8 +54,8 @@ function sqlRequest(sql) {
                             .query(sql)
                             .then(function (p) { return r.body = p.rows; })
                             .catch(function (e) {
-                            console.error(e);
                             r.error = true;
+                            throw new Error(e);
                         })];
                 case 1:
                     _a.sent();

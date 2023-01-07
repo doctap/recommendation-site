@@ -51,12 +51,12 @@ var manageFS_1 = require("./utils/manageFS");
 var upload_1 = __importDefault(require("./middleware/upload"));
 dotenv_1.default.config();
 var app = (0, express_1.default)();
-var port = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 5000; //8080
+var port = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 8080; // 8080
 app.use(express_1.default.urlencoded({ extended: true }));
 var corsOptions = {
     credentials: true,
     optionsSuccessStatus: 200,
-    origin: ['http://localhost:3000'],
+    origin: "http://localhost:8080",
     methods: ['GET', 'POST', 'DELETE'],
 };
 app.use((0, helmet_1.default)());
@@ -79,7 +79,7 @@ app.post("/", function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                 else {
                     r.body.forEach(function (it) {
                         it.average_rating = parseFloat(it.average_rating).toFixed(1);
-                        it.image = (0, manageFS_1.convertBase64)("C:/Im-learning-by-myself/recommendation-site/uploads/".concat(it.image));
+                        it.image = (0, manageFS_1.convertBase64)("uploads/".concat(it.image));
                     });
                     res.setHeader("Content-Type", "application/json").status(200).json(r.body);
                 }
@@ -123,7 +123,7 @@ app.get("/review/:id", function (req, res) { return __awaiter(void 0, void 0, vo
                 else {
                     r.body.forEach(function (it) {
                         it.average_rating = parseFloat(it.average_rating).toFixed(1);
-                        it.image = (0, manageFS_1.convertBase64)("C:/Im-learning-by-myself/recommendation-site/uploads/".concat(it.image));
+                        it.image = (0, manageFS_1.convertBase64)("uploads/".concat(it.image));
                     });
                     res.setHeader("Content-Type", "application/json").status(200).json(r.body);
                 }
@@ -147,7 +147,7 @@ app.post("/protected_Review", checkJwt_1.checkJwt, function (req, res) { return 
                 else {
                     r.body.forEach(function (it) {
                         it.average_rating = parseFloat(it.average_rating).toFixed(1);
-                        it.image = (0, manageFS_1.convertBase64)("C:/Im-learning-by-myself/recommendation-site/uploads/".concat(it.image));
+                        it.image = (0, manageFS_1.convertBase64)("uploads/".concat(it.image));
                     });
                     res.setHeader("Content-Type", "application/json").status(200).json(r.body);
                 }
@@ -171,7 +171,7 @@ app.post("/protectedReviews", checkJwt_1.checkJwt, function (req, res) { return 
                 else {
                     r.body.forEach(function (it) {
                         it.average_rating = parseFloat(it.average_rating).toFixed(1);
-                        it.image = (0, manageFS_1.convertBase64)("C:/Im-learning-by-myself/recommendation-site/uploads/".concat(it.image));
+                        it.image = (0, manageFS_1.convertBase64)("uploads/".concat(it.image));
                     });
                     res.setHeader("Content-Type", "application/json").status(200).json(r.body);
                 }
@@ -195,7 +195,7 @@ app.post("/profilePage", checkJwt_1.checkJwt, function (req, res) { return __awa
                 else {
                     r.body.forEach(function (it) {
                         it.average_rating = parseFloat(it.average_rating).toFixed(1);
-                        it.image = (0, manageFS_1.convertBase64)("C:/Im-learning-by-myself/recommendation-site/uploads/".concat(it.image));
+                        it.image = (0, manageFS_1.convertBase64)("uploads/".concat(it.image));
                     });
                     res.setHeader("Content-Type", "application/json").status(200).json(r.body);
                 }
