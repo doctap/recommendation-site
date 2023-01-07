@@ -326,6 +326,20 @@ app.post('/giveRating', checkJwt_1.checkJwt, function (req, res) { return __awai
         }
     });
 }); });
+app.get("/confidential", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        console.log("send client policy confidential");
+        res.setHeader("Content-Type", "application/json").status(200).json([{ body: 'policy confidential' }]);
+        return [2 /*return*/];
+    });
+}); });
+app.delete('/user-deletion', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        console.log("DELETE Request Called for /user-deletion endpoint");
+        res.send("DELETE Request Called");
+        return [2 /*return*/];
+    });
+}); });
 app.use('*', function (req, res) {
     res.status(501).json({ message: 'Only api endpoint available' });
 });

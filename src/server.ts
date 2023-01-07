@@ -265,6 +265,16 @@ app.post('/giveRating', checkJwt, async (req: IBody<IRate>, res) => {
 	})
 })
 
+app.get(`/confidential`, async (req, res) => {
+	console.log("send client policy confidential")
+	res.setHeader("Content-Type", "application/json").status(200).json([{ body: 'policy confidential' }]);
+})
+
+app.delete('/user-deletion', async (req, res) => {
+	console.log("DELETE Request Called for /user-deletion endpoint")
+	res.send("DELETE Request Called")
+})
+
 app.use('*', (req, res) => {
 	res.status(501).json({ message: 'Only api endpoint available' })
 })
