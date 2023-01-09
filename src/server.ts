@@ -35,7 +35,21 @@ const corsOptions: CorsOptions = {
 	methods: ['GET', 'POST', 'DELETE'],
 }
 
-app.use(helmet());
+app.use(helmet({
+	contentSecurityPolicy: {
+		directives: {
+			defaultSrc: ["'self'"],
+			scriptSrc: ["'self'"],
+			styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
+			imgSrc: ["'self'", 'data:'],
+			connectSrc: ["'self'", 'https://recommendations-app.eu.auth0.com/oauth/token'],
+			fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+			objectSrc: ["'self'"],
+			mediaSrc: ["'self'"],
+			frameSrc: ["'self'", "recommendations-app.eu.auth0.com"],
+		},
+	}
+}));
 app.use(cors(corsOptions));
 
 app.use(express.static("public"));
