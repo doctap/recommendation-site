@@ -25,13 +25,13 @@ import upload from './middleware/upload'
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT ?? 8080; // 8080
+const port = process.env.PORT ?? 5000;
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions: CorsOptions = {
 	credentials: true,
 	optionsSuccessStatus: 200,
-	origin: 'https://some-reviews.onrender.com',
+	origin: ['https://some-reviews.onrender.com', 'http://localhost:3000'],
 	methods: ['GET', 'POST', 'DELETE'],
 }
 

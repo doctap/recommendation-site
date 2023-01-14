@@ -2,6 +2,9 @@ import { Client } from 'pg';
 import { IResponseDB } from '../types/data-contracts';
 
 const client = new Client({
+	// user: "toor",
+	// password: "toor",
+	// host: "localhost",
 	database: 'root_m3iz',
 	user: "root",
 	password: "fhQJLApGCFbsHb0AXhJ8OasEKVI2aJgn",
