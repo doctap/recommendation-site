@@ -41,17 +41,17 @@ var pg_1 = require("pg");
 /**
  * NODE_ENV variable installed in package.json "scripts"
  */
-var config = process.env.NODE_ENV === 'production'
+var config = process.env.NODE_ENV === 'development'
     ? {
+        user: "toor",
+        password: "toor",
+        host: "localhost",
+    }
+    : {
         database: 'root_m3iz',
         user: "root",
         password: "fhQJLApGCFbsHb0AXhJ8OasEKVI2aJgn",
         host: "dpg-cesjbug2i3mh51uqttf0-a",
-    }
-    : {
-        user: "toor",
-        password: "toor",
-        host: "localhost",
     };
 var client = new pg_1.Client(config);
 function sqlRequest(sql) {
