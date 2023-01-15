@@ -1,15 +1,23 @@
 import { Client } from 'pg';
 import { IResponseDB } from '../types/data-contracts';
 
-const client = new Client({
-	// user: "toor",
-	// password: "toor",
-	// host: "localhost",
-	database: 'root_m3iz',
-	user: "root",
-	password: "fhQJLApGCFbsHb0AXhJ8OasEKVI2aJgn",
-	host: "dpg-cesjbug2i3mh51uqttf0-a",
-});
+/**
+ * NODE_ENV variable installed in package.json "scripts"
+ */
+const config = process.env.NODE_ENV === 'production'
+	? {
+		database: 'root_m3iz',
+		user: "root",
+		password: "fhQJLApGCFbsHb0AXhJ8OasEKVI2aJgn",
+		host: "dpg-cesjbug2i3mh51uqttf0-a",
+	}
+	: {
+		user: "toor",
+		password: "toor",
+		host: "localhost",
+	};
+
+const client = new Client(config);
 
 export async function sqlRequest<T = any>(sql: string) {
 	const r: IResponseDB<T> = { body: [], error: false };

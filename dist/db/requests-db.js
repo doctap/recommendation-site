@@ -38,15 +38,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sqlRequest = void 0;
 var pg_1 = require("pg");
-var client = new pg_1.Client({
-    // user: "toor",
-    // password: "toor",
-    // host: "localhost",
-    database: 'root_m3iz',
-    user: "root",
-    password: "fhQJLApGCFbsHb0AXhJ8OasEKVI2aJgn",
-    host: "dpg-cesjbug2i3mh51uqttf0-a",
-});
+/**
+ * NODE_ENV variable installed in package.json "scripts"
+ */
+var config = process.env.NODE_ENV === 'production'
+    ? {
+        database: 'root_m3iz',
+        user: "root",
+        password: "fhQJLApGCFbsHb0AXhJ8OasEKVI2aJgn",
+        host: "dpg-cesjbug2i3mh51uqttf0-a",
+    }
+    : {
+        user: "toor",
+        password: "toor",
+        host: "localhost",
+    };
+var client = new pg_1.Client(config);
 function sqlRequest(sql) {
     return __awaiter(this, void 0, void 0, function () {
         var r;

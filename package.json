@@ -8,9 +8,9 @@
 	"license": "ISC",
 	"scripts": {
 		"start": "node dist/server.js",
-		"dev": "tsnd --respawn src/server.ts",
+		"dev": "set NODE_ENV=development && tsnd --respawn src/server.ts",
 		"add-build": "git add dist",
-		"build": "rimraf dist && tsc",
+		"build": "set NODE_ENV=production && rimraf dist && tsc",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prepare": "husky install"
 	},
