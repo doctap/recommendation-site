@@ -10,7 +10,7 @@
 		"start": "node dist/server.js",
 		"dev": "set NODE_ENV=development && tsnd --respawn src/server.ts",
 		"add-build": "git add dist",
-		"build": "set NODE_ENV=production && rimraf dist && tsc",
+		"build": "rimraf dist && tsc",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prepare": "husky install"
 	},

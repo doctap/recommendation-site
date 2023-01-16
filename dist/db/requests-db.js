@@ -35,13 +35,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sqlRequest = void 0;
 var pg_1 = require("pg");
 /**
  * NODE_ENV variable installed in package.json "scripts"
  */
-var config = process.env.NODE_ENV === 'development'
+var config = ((_a = process.env.NODE_ENV) === null || _a === void 0 ? void 0 : _a.trim()) === 'development'
     ? {
         user: "toor",
         password: "toor",
