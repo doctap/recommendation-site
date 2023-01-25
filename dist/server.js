@@ -65,7 +65,7 @@ app.use((0, helmet_1.default)({
             defaultSrc: ["'self'"],
             scriptSrc: ["'self'"],
             styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
-            imgSrc: ["*"],
+            imgSrc: ["*", "'self'", 'data:', 'https:'],
             connectSrc: ["'self'", 'https://recommendations-app.eu.auth0.com/oauth/token'],
             fontSrc: ["'self'", 'https://fonts.gstatic.com'],
             objectSrc: ["'self'"],
