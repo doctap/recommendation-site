@@ -56,7 +56,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 var corsOptions = {
     credentials: true,
     optionsSuccessStatus: 200,
-    origin: ['https://some-reviews.onrender.com', 'http://localhost:3000'],
+    origin: ['https://some-reviews.onrender.com', 'http://localhost:5000'],
     methods: ['GET', 'POST', 'DELETE'],
 };
 app.use((0, helmet_1.default)({
@@ -65,7 +65,7 @@ app.use((0, helmet_1.default)({
             defaultSrc: ["'self'"],
             scriptSrc: ["'self'"],
             styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
-            imgSrc: ["'self'", 'data:'],
+            imgSrc: ["https:"],
             connectSrc: ["'self'", 'https://recommendations-app.eu.auth0.com/oauth/token'],
             fontSrc: ["'self'", 'https://fonts.gstatic.com'],
             objectSrc: ["'self'"],
