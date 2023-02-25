@@ -278,8 +278,6 @@ app.post('/giveRating', checkJwt, async (req: IBody<IRate>, res) => {
 		}
 	})
 })
-  
-
 
 app.get(`/confidential`, async (req, res) => {
 	console.log("send client policy confidential")
@@ -294,10 +292,6 @@ app.delete('/user-deletion', async (req, res) => {
 app.use('*', (req, res) => {
 	res.status(501).json({ message: 'Only api endpoint available' })
 })
-
-app.listen(port, () => {
-	console.log(`⚡️[server]: Server is running at https://localhost:${port} 🚀`);
-});
 
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at https://localhost:${port} 🚀`);
