@@ -233,6 +233,8 @@ app.post("/registerUser", checkJwt, async (req: IBody<IUser>, res: Response) => 
 	})
 })
 
+
+
 app.post('/likeReview', checkJwt, async (req: IBody<ILike>, res) => {
 	const body = req.body;
 	await sqlRequest(
