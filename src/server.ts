@@ -302,3 +302,7 @@ app.listen(port, () => {
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is qwertat https://localhost:${port} 🚀`);
 });
+
+app.listen(port, () => {
+	console.log(`⚡️[server]: Server is running at https://localhost:${port} 🚀`);
+});
