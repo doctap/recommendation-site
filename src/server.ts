@@ -278,6 +278,8 @@ app.post('/giveRating', checkJwt, async (req: IBody<IRate>, res) => {
 		}
 	})
 })
+  
+
 
 app.get(`/confidential`, async (req, res) => {
 	console.log("send client policy confidential")
