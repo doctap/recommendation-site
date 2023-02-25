@@ -360,7 +360,4 @@ app.use('*', function (req, res) {
 app.listen(port, function () {
     console.log("\u26A1\uFE0F[server]: Server is running at https://localhost:".concat(port, " \uD83D\uDE80"));
 });
-app.listen(port, function () {
-    console.log("\u26A1\uFE0F[server]: Server is qwertat https://localhost:".concat(port, " \uD83D\uDE80"));
-});
 //# sourceMappingURL=server.js.map

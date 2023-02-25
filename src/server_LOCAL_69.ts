@@ -278,6 +278,8 @@ app.post('/giveRating', checkJwt, async (req: IBody<IRate>, res) => {
 		}
 	})
 })
+  
+
 
 app.get(`/confidential`, async (req, res) => {
 	console.log("send client policy confidential")
@@ -295,4 +297,8 @@ app.use('*', (req, res) => {
 
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at https://localhost:${port} 🚀`);
+});
+
+app.listen(port, () => {
+	console.log(`⚡️[server]: Server is qwertat https://localhost:${port} 🚀`);
 });
