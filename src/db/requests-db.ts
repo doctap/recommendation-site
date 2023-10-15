@@ -2,12 +2,12 @@ import { Client } from 'pg';
 import { IResponseDB } from '../types/data-contracts';
 
 /**
- * NODE_ENV variable installed in package.json "scripts"
+ * NODE_ENV announce a variable in package.json "scripts"
  */
 const config = process.env.NODE_ENV?.trim() === 'development'
 	? {
-		user: "toor",
-		password: "toor",
+		user: "root",
+		password: "root",
 		host: "localhost",
 	}
 	: {

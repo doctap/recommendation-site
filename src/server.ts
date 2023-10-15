@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 const corsOptions: CorsOptions = {
 	credentials: true,
 	optionsSuccessStatus: 200,
-	origin: ['https://some-reviews.onrender.com', 'http://localhost:5000'],
+	origin: ['https://some-reviews.onrender.com', 'http://localhost:3000'],
 	methods: ['GET', 'POST', 'DELETE'],
 }
 

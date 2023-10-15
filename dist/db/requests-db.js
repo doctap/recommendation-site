@@ -40,12 +40,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sqlRequest = void 0;
 var pg_1 = require("pg");
 /**
- * NODE_ENV variable installed in package.json "scripts"
+ * NODE_ENV announce a variable in package.json "scripts"
  */
 var config = ((_a = process.env.NODE_ENV) === null || _a === void 0 ? void 0 : _a.trim()) === 'development'
     ? {
-        user: "toor",
-        password: "toor",
+        user: "root",
+        password: "root",
         host: "localhost",
     }
     : {
